@@ -8,31 +8,18 @@ public class BulletController : MonoBehaviour
     float speed = 10.0F;
 
     [SerializeField]
-    float lifeTime = 3.0F;
+    float lifeTime = 1.0F;
 
     Rigidbody rb;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-    }
-
-    void Start()
-    {
-        Destroy(gameObject, lifeTime);
+        Destroy(transform.parent.gameObject, lifeTime);
     }
 
     void FixedUpdate()
     {
         rb.velocity = transform.forward * speed;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log("bullet hit");
-            Destroy(gameObject);
-        }
     }
 }

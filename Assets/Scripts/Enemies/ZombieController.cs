@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,41 +24,40 @@ public class ZombieController : MonoBehaviour
         _navAgent.SetDestination(player.gameObject.transform.position);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
+    //private void OnTriggerEnter(Collider other)
+    //{
 
-        if (other.gameObject.CompareTag("Bullet"))
+    //    if (other.gameObject.CompareTag("Bullet"))
+    //    {
+    //        if (enemyHealth > 0)
+    //        {
+
+    //            enemyHealth--;
+    //            Debug.Log("Enemigo ha tocado! " + other.gameObject.tag + " " + enemyHealth);
+    //            Destroy(other.transform.parent.gameObject);
+    //            if (enemyHealth <= 0)
+    //            {
+    //                Destroy(gameObject);
+    //            }
+    //        }
+    //    }
+    //}
+
+    public void TakeDamage(float damage)
+    {
+        if (enemyHealth > 0)
         {
-            Debug.Log("Enemigo ha tocado! " + other.gameObject.tag + " " + enemyHealth);
-            if (enemyHealth > 0)
+            enemyHealth -= damage;
+            Debug.Log("Enemigo dañado!" + enemyHealth);
+            if (enemyHealth <= 0)
             {
-                enemyHealth--;
-                if (enemyHealth <= 0)
-                {
-                    Destroy(gameObject);
-                }
+                Die();
             }
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    void Die()
     {
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-
-        if (other.gameObject.CompareTag("Bullet"))
-        {
-            Debug.Log("Enemigo ha tocado! " + other.gameObject.tag + " " + enemyHealth);
-            if (enemyHealth > 0)
-            {
-                enemyHealth--;
-                if (enemyHealth <= 0)
-                {
-                    Destroy(gameObject);
-                }
-            }
-        }
+        Destroy(transform.parent.gameObject);
     }
 }
