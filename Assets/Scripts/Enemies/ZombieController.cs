@@ -24,25 +24,6 @@ public class ZombieController : MonoBehaviour
         _navAgent.SetDestination(player.gameObject.transform.position);
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-
-    //    if (other.gameObject.CompareTag("Bullet"))
-    //    {
-    //        if (enemyHealth > 0)
-    //        {
-
-    //            enemyHealth--;
-    //            Debug.Log("Enemigo ha tocado! " + other.gameObject.tag + " " + enemyHealth);
-    //            Destroy(other.transform.parent.gameObject);
-    //            if (enemyHealth <= 0)
-    //            {
-    //                Destroy(gameObject);
-    //            }
-    //        }
-    //    }
-    //}
-
     public void TakeDamage(float damage)
     {
         if (enemyHealth > 0)
@@ -58,6 +39,8 @@ public class ZombieController : MonoBehaviour
 
     void Die()
     {
+        AudioManager.Instance.PlaySFX("Zombie Dead");
+
         Destroy(transform.parent.gameObject);
     }
 }
