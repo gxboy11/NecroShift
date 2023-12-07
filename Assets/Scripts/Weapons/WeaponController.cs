@@ -7,6 +7,12 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum ShotType
+{
+    Automatic,
+    Manual
+}
+
 public class WeaponController : MonoBehaviour
 {
 
@@ -16,9 +22,6 @@ public class WeaponController : MonoBehaviour
     LayerMask hittableLayer;
 
     [SerializeField]
-    LayerMask enemyLayer;
-
-    [SerializeField]
     GameObject bulletHolePrefab;
 
     [SerializeField]
@@ -26,12 +29,9 @@ public class WeaponController : MonoBehaviour
 
 
 
-
-
     [Header("FX")]
     [SerializeField]
     GameObject flashEffect;
-
 
 
 
@@ -54,6 +54,9 @@ public class WeaponController : MonoBehaviour
     [SerializeField]
     int maxAmmo = 15;
 
+    [SerializeField]
+    ShotType shotType;
+
 
 
     [Header("Bullet Stats")]
@@ -74,8 +77,6 @@ public class WeaponController : MonoBehaviour
 
 
 
-
-
     //Private Floats
     float _currentTime;
 
@@ -85,6 +86,7 @@ public class WeaponController : MonoBehaviour
     //Private Bools
     bool _isRecoiling = false;
     bool _isReloading = false;
+    bool _isShooting = false;
 
     //Private Misc
     Transform _cameraPlayerTransform;
@@ -112,11 +114,27 @@ public class WeaponController : MonoBehaviour
         {
             return;
         }
-        HandleShoot();
+
+        HandleInputs();
         StartCoroutine(HandleReload());
         ReloadCounter();
 
         transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, Time.deltaTime * 5f);
+    }
+
+    void HandleInputs()
+    {
+        if (shotType == ShotType.Manual)
+        {
+            _isShooting = Input.GetButtonDown("Fire1");
+            HandleShoot();
+
+        }
+        else if (shotType == ShotType.Automatic)
+        {
+            _isShooting = Input.GetButton("Fire1");
+            HandleShoot();
+        }
     }
 
     private void HandleShoot()
@@ -124,15 +142,19 @@ public class WeaponController : MonoBehaviour
         _currentTime += Time.deltaTime;
         if (_currentAmmo > 0 && !_isReloading)
         {
-            if (_currentTime >= fireRate && Input.GetButtonDown("Fire1"))
+            if (_currentTime >= fireRate && _isShooting)
             {
                 _currentAmmo--;
-                GameObject flashClone = Instantiate(flashEffect, firePoint.position, Quaternion.Euler(firePoint.forward), transform);
+
+                AudioManager.Instance.PlaySFX("GunFire");
+
+                GameObject flashClone = Instantiate(flashEffect, firePoint.position, Quaternion.Euler(firePoint.forward), transform); //Efecto Flash
                 Destroy(flashClone, 1f);
+
                 StartCoroutine(AddRecoil());
 
                 RaycastHit hit;
-                if (Physics.Raycast(_cameraPlayerTransform.position, _cameraPlayerTransform.forward, out hit, fireRange, hittableLayer))
+                if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, fireRange, hittableLayer)) //Disparo
                 {
                     ZombieController zombie = hit.transform.GetComponent<ZombieController>();
 
@@ -140,14 +162,14 @@ public class WeaponController : MonoBehaviour
                     ShootBullet();
                     if (hit.collider.tag == "Enemy")
                     {
-                        _hitMarker.BodyShot();
+                        HitMarkerController.Instance.BodyShot();
                         zombie.TakeDamage(bulletDamage);
 
                         return;
                     }
                     else if (hit.collider.tag == "EnemyHead")
                     {
-                        _hitMarker.HeadShot();
+                        HitMarkerController.Instance.HeadShot();
                         zombie.TakeDamage(bulletDamage * 2);
                         return;
                     }
@@ -156,15 +178,14 @@ public class WeaponController : MonoBehaviour
                 Destroy(bulletHoleClone, bulletHoleLifeTime);
             }
         }
-        else if (_currentAmmo < 0)
+        else if (_currentAmmo <= 0 && Input.GetButtonDown("Fire1")) //No se usa _isShooting porque en "Automatic" se satura
         {
-            StartCoroutine(HandleReload());
+            AudioManager.Instance.PlaySFX("Clean Gun");
         }
     }
 
     void ShootBullet()
     {
-        AudioManager.Instance.PlaySFX("GunFire");
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
     }
 
@@ -188,6 +209,10 @@ public class WeaponController : MonoBehaviour
             _isReloading = true;
             Debug.Log("Recargando...");
 
+            AudioManager.Instance.PlaySFX("Reload");
+
+
+            Debug.Log(gameObject.name);
             yield return new WaitForSeconds(reloadTime);
 
             _currentAmmo = maxAmmo;
@@ -206,6 +231,7 @@ public class WeaponController : MonoBehaviour
         {
             bulletCount.text = "Recargando...";
         }
-
     }
+
+
 }

@@ -23,14 +23,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 532024048935037039}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.032281213, y: -0.010466315, z: 0.00033806002, w: 0.99942404}
   m_LocalPosition: {x: 0.0052, y: 0.0435, z: 0.2944}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 65469805165582269}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 3.7, y: -1.2, z: 0}
 --- !u!1 &838594067412077831
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,16 +131,20 @@ MonoBehaviour:
   hittableLayer:
     serializedVersion: 2
     m_Bits: 4294967295
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 0
   bulletHolePrefab: {fileID: 3436891218066723735, guid: 68f355f74c4b19c479bbbbd90155b318,
     type: 3}
   bulletPrefab: {fileID: 7065240663802611530, guid: 90aa220db853e054fa81942e6d8800ce,
     type: 3}
-  fireRange: 200
+  flashEffect: {fileID: 3861215425497690349, guid: bb2b6c93226414a4bb7397169cc21974,
+    type: 3}
+  fireRange: 50
   bulletHoleLifeTime: 4
+  fireRate: 0
+  bulletDamage: 4
+  recoilForce: 4
+  maxAmmo: 25
+  shotType: 0
   firePoint: {fileID: 532024048935037038}
   force: 100
-  fireRate: 0.5
-  bulletDamage: 5
+  reloadTime: 1
+  bulletCount: {fileID: 0}

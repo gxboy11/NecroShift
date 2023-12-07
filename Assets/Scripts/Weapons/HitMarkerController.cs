@@ -4,12 +4,11 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public class HitMarkerController : MonoBehaviour
+public class HitMarkerController : Singleton<HitMarkerController>
 {
     Image _hitMark;
 
-
-    private void Awake()
+    private void Start()
     {
         _hitMark = GetComponent<Image>();
     }

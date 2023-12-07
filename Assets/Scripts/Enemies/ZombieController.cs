@@ -10,12 +10,16 @@ public class ZombieController : MonoBehaviour
     float enemyHealth = 10.0f;
 
     [SerializeField]
+    float zombieSpeed = 10.0f;
+
+    [SerializeField]
     NavMeshAgent _navAgent;
 
     GameObject player;
 
     void Start()
     {
+        _navAgent.speed = zombieSpeed;
         player = GameObject.FindGameObjectWithTag("Player");
     }
 

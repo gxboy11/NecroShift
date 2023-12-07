@@ -199,8 +199,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1302ea7faf955da42aa50cf601980be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyHealth: 10
-  _navAgent: {fileID: 0}
+  enemyHealth: 15
+  zombieSpeed: 7
+  _navAgent: {fileID: 9035168788495494178}
 --- !u!54 &6958328879018740339
 Rigidbody:
   m_ObjectHideFlags: 0

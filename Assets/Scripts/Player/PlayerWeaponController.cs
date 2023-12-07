@@ -31,6 +31,7 @@ public class PlayerWeaponController : MonoBehaviour
         {
             AddWeapon(startingWeapon);
         }
+        SwitchWeapon();
     }
 
     // Update is called once per frame
@@ -38,18 +39,23 @@ public class PlayerWeaponController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SwitchWeapon(0);
+            SwitchWeapon();
         }
 
     }
 
-    private void SwitchWeapon(int weaponIndex)
+    private void SwitchWeapon()
     {
-        if (weaponIndex != activeWeaponIndex && weaponIndex >= 0)
+        int tempIndex = (activeWeaponIndex + 1) % weaponSlots.Length;
+
+        foreach (WeaponController weapon in weaponSlots)
         {
-            weaponSlots[weaponIndex].gameObject.SetActive(true);
-            activeWeaponIndex = weaponIndex;
+            if (weapon != null) weapon.gameObject.SetActive(false);
         }
+
+        AudioManager.Instance.PlaySFX("Switch Weapon");
+        weaponSlots[tempIndex].gameObject.SetActive(true);
+        activeWeaponIndex = tempIndex;
     }
 
     void AddWeapon(WeaponController weaponPrefab)
