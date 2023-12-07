@@ -200,7 +200,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyHealth: 10
-  _navAgent: {fileID: 0}
+  zombieSpeed: 8
+  _navAgent: {fileID: 2224168738377655990}
 --- !u!54 &1893494376009399346
 Rigidbody:
   m_ObjectHideFlags: 0

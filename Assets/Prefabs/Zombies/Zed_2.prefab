@@ -122,7 +122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1302ea7faf955da42aa50cf601980be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyHealth: 10
+  enemyHealth: 12
+  zombieSpeed: 10
   _navAgent: {fileID: 9101007012434939583}
 --- !u!54 &7126000468609575614
 Rigidbody:
