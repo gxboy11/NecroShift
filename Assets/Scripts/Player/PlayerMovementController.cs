@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -114,7 +115,7 @@ public class PlayerMovementController : MonoBehaviour
         // Si _isRunning es true usará sprintSpeed. 
         // Si es false usará walkingSpeed o crouchSpeed según si está agachado o no. 
         // Si está Sliding, aplicará una aceleración
-        float speed = _isRunning ? sprintSpeed : (_isCrouch ? crouchSpeed : (_isSliding ? (walkingSpeed - _deaccelerateSlide) : walkingSpeed));
+        float speed = _isRunning ? sprintSpeed : (_isCrouch ? crouchSpeed : (_isSliding ? (walkingSpeed + _deaccelerateSlide) : walkingSpeed));
 
         _characterController.Move(move * speed * Time.deltaTime);
     }
@@ -182,26 +183,26 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (IsGrounded() && _isSliding)
         {
-            StartSlide();
+            float yPosition = _characterController.gameObject.transform.position.y;
+            _slideTimer += Time.deltaTime;
+
+            if (_isSliding && _slideTimer > 0)
+            {
+                // Realiza las acciones de slide
+                Slide();
+                Debug.Log(_slideTimer);
+
+                if (_slideTimer > slideTime)
+                {
+                    // Termina el slide cuando se agota el tiempo
+                    StartCoroutine(EndSlide());
+                }
+            } else
+            {
+                _slideTimer = 0;
+            }
         }
 
-        if (_isSliding && _slideTimer > 0)
-        {
-            // Realiza las acciones de slide
-            Slide();
-            _slideTimer -= Time.deltaTime;
-        }
-        else if (_slideTimer <= 0)
-        {
-            // Termina el slide cuando se agota el tiempo
-            EndSlide();
-        }
-    }
-
-    void StartSlide()
-    {
-        _isSliding = true;
-        _slideTimer = slideTime;
     }
 
     void Slide()
@@ -209,35 +210,37 @@ public class PlayerMovementController : MonoBehaviour
         _characterController.height = crouchYScale;
         transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
 
-        // Aplica desaceleración a la velocidad durante el slide
-        float deacceleration = CalcularDesaceleracion(walkingSpeed * slideSpeed, walkingSpeed, _slideTimer);
-
-        //// Asegúrate de que el temporizador nunca sea negativo
-        //_slideTimer = Mathf.Max(0f, Mathf.Round(_slideTimer) - Time.deltaTime);
-
-        // Utiliza la desaceleración calculada para ajustar la velocidad de movimiento en HandleMove
-        _deaccelerateSlide = deacceleration;
-
-        Debug.Log(_slideTimer + " " + (walkingSpeed + _deaccelerateSlide));
+        _deaccelerateSlide = slideSpeed;
     }
 
-    void EndSlide()
+    IEnumerator EndSlide()
     {
         _isSliding = false;
+
+        _deaccelerateSlide = slideSpeed * -1;
+
+        yield return new WaitForSeconds(0.5f);
 
         transform.localScale = new Vector3(transform.localScale.x, _startYScale, transform.localScale.z);
         //Devuelve la altura original para no hundirse
         _characterController.height = _startHeight;
+
+        _slideTimer = 0;
     }
 
 
     float CalcularDesaceleracion(float initialVelocity, float finalVelocity, float time)
     {
-        // Calcula la desaceleración de manera que disminuye gradualmente
         float deacceleration = (2 * (finalVelocity - initialVelocity)) / (time * time);
 
         return deacceleration;
     }
 
+    //// Aplica desaceleración a la velocidad durante el slide
+    //float deacceleration = CalcularDesaceleracion(walkingSpeed * slideSpeed, 0f, _slideTimer);
 
+    //// Utiliza la desaceleración calculada para ajustar la velocidad de movimiento en HandleMove
+    //_deaccelerateSlide = deacceleration;
+
+    //Debug.Log(_slideTimer + " " + (walkingSpeed + _deaccelerateSlide));
 }
