@@ -135,6 +135,8 @@ MonoBehaviour:
     type: 3}
   bulletPrefab: {fileID: 7065240663802611530, guid: 90aa220db853e054fa81942e6d8800ce,
     type: 3}
+  zoomScope: 25
+  hasAim: 1
   flashEffect: {fileID: 3861215425497690349, guid: bb2b6c93226414a4bb7397169cc21974,
     type: 3}
   fireRange: 150

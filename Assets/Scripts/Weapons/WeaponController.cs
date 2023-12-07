@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public enum ShotType
@@ -26,6 +27,14 @@ public class WeaponController : MonoBehaviour
 
     [SerializeField]
     GameObject bulletPrefab;
+
+
+    [Header("Scope")]
+    [SerializeField]
+    float zoomScope = 20.0f;
+
+    [SerializeField]
+    bool hasAim = false;
 
 
 
@@ -80,6 +89,8 @@ public class WeaponController : MonoBehaviour
     //Private Floats
     float _currentTime;
 
+    float _initialFOV;
+
     //Private Integers
     int _currentAmmo;
 
@@ -87,16 +98,20 @@ public class WeaponController : MonoBehaviour
     bool _isRecoiling = false;
     bool _isReloading = false;
     bool _isShooting = false;
+    bool _isAiming = false;
 
     //Private Misc
     Transform _cameraPlayerTransform;
     HitMarkerController _hitMarker;
+    AimerUIController _scope;
 
     private void Awake()
     {
         _cameraPlayerTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
 
         _hitMarker = FindObjectOfType<HitMarkerController>();
+
+        _scope = FindObjectOfType<AimerUIController>();
 
         if (_hitMarker != null)
         {
@@ -105,7 +120,9 @@ public class WeaponController : MonoBehaviour
 
         bulletCount = FindObjectOfType<TextMeshProUGUI>();
 
+
         _currentAmmo = maxAmmo;
+        _initialFOV = Camera.main.fieldOfView;
     }
 
     private void Update()
@@ -116,10 +133,11 @@ public class WeaponController : MonoBehaviour
         }
 
         HandleInputs();
+        HandleAim();
         StartCoroutine(HandleReload());
         ReloadCounter();
 
-        transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, Time.deltaTime * 5f);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, Time.deltaTime * 5f); //Resetea Recoil
     }
 
     void HandleInputs()
@@ -135,6 +153,8 @@ public class WeaponController : MonoBehaviour
             _isShooting = Input.GetButton("Fire1");
             HandleShoot();
         }
+
+        _isAiming = Input.GetButton("Aim");
     }
 
     private void HandleShoot()
@@ -154,7 +174,7 @@ public class WeaponController : MonoBehaviour
                 StartCoroutine(AddRecoil());
 
                 RaycastHit hit;
-                if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, fireRange, hittableLayer)) //Disparo
+                if (Physics.Raycast(_cameraPlayerTransform.position, _cameraPlayerTransform.forward, out hit, fireRange, hittableLayer)) //Disparo
                 {
                     ZombieController zombie = hit.transform.GetComponent<ZombieController>();
 
@@ -233,5 +253,27 @@ public class WeaponController : MonoBehaviour
         }
     }
 
+    void HandleAim()
+    {
+        if (hasAim)
+        {
+            if (_isAiming)
+            {
+                Camera.main.fieldOfView = zoomScope;
+                _scope.AimScope();
+            }
+            else
+            {
+                
+                Camera.main.fieldOfView = _initialFOV;
+                _scope.HipAim();
 
+            }
+        }
+        else
+        {
+            _scope.HipAim();
+        }
+
+    }
 }
