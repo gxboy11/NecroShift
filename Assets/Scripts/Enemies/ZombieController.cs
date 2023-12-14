@@ -21,10 +21,15 @@ public class ZombieController : MonoBehaviour
 
     GameObject player;
 
+    private GameManager gameManager;
+
+    public GameObject[] consumible;
+
     void Start()
     {
         _navAgent.speed = zombieSpeed;
         player = GameObject.FindGameObjectWithTag("Player");
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     void Update()
@@ -52,5 +57,13 @@ public class ZombieController : MonoBehaviour
         AudioManager.Instance.PlaySFX("Zombie Dead");
 
         Destroy(transform.parent.gameObject);
+        gameManager.defeatedEnemies += 1;
+
+        int dejaConsum = Random.Range(0, 2);
+        if(dejaConsum == 1)
+        {
+            int tipoConsum = Random.Range(0, 4);
+            Destroy(Instantiate(consumible[tipoConsum], new Vector3(transform.position.x, 0.59f, transform.position.z), transform.rotation), 5);
+        }
     }
 }
