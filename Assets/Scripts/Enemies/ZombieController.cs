@@ -74,7 +74,7 @@ public class ZombieController : MonoBehaviour
 
         _animator.SetTrigger("Die");
 
-        AudioManager.Instance.PlaySFX("DeadZombie");
+        AudioManager.Instance.PlaySFX("ZombieDead");
 
         yield return new WaitForSeconds(4.0F);
 
