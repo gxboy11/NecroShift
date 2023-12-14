@@ -1,4 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,10 +14,15 @@ public class ZombieController : MonoBehaviour
     float zombieSpeed = 10.0f;
 
     [SerializeField]
+
     float attackRange = 2.0f;
 
     [SerializeField]
     Animator _animator;
+    int coins;
+
+    [SerializeField]
+    NavMeshAgent _navAgent;
 
     GameObject player;
 
@@ -73,8 +81,11 @@ public class ZombieController : MonoBehaviour
 
 
         _animator.SetTrigger("Die");
+        
+        GameManager.Instance.SetDefeatedEnemy();
+        GameManager.Instance.IncrementCoins(coins);
 
-        AudioManager.Instance.PlaySFX("ZombieDead");
+        AudioManager.Instance.PlaySFX("Zombie Dead");
 
         yield return new WaitForSeconds(4.0F);
 
@@ -127,7 +138,7 @@ public class ZombieController : MonoBehaviour
         if (enemyHealth > 0)
         {
             enemyHealth -= damage;
-            Debug.Log("Enemigo dañado!" + enemyHealth);
+            Debug.Log("Enemigo daï¿½ado!" + enemyHealth);
             if (enemyHealth <= 0)
             {
                 StartCoroutine(DieCoroutine());
