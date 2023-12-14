@@ -1,31 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Video;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     public int defeatedEnemies;
-    public int vida;
+    public int vidaPlayer;
     public int monedas;
-    public int balas;
+
     void Start()
     {
         defeatedEnemies = 0;
-        vida = 10;
+        monedas = 0;
     }
 
-   
-    void Update()
+    public void GameOver()
     {
-        if (vida < 1 )
-        {
-            GameOver();
-        }
+        //Escene GameOver
     }
 
-    void GameOver()
+    public void SetDefeatedEnemy()
     {
+        defeatedEnemies++;
+    }
 
+    public void SetPlayerDamage(int receivedDamage)
+    {
+        vidaPlayer -= receivedDamage;
+    }
+
+    public void IncrementCoins(int receivedCoins)
+    {
+        monedas += receivedCoins;
+    }
+
+    public int GetCoins()
+    {
+        return monedas;
+    }
+
+    public int GetDefeatedEnemies()
+    {
+        return defeatedEnemies;
     }
 }
