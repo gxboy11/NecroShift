@@ -24,13 +24,13 @@ public class SpawnManager : MonoBehaviour
         wave = 1;
         spawning = false;
         enemiesSpawned = 0;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-
+  
     void Update()
     {
-        if (spawning == false && enemiesSpawned == GameManager.Instance.GetDefeatedEnemies())
-        {
+        if(spawning == false && enemiesSpawned == gameManager.defeatedEnemies) {
             StartCoroutine(SpawnWave(waveCount));
         }
     }
@@ -39,9 +39,9 @@ public class SpawnManager : MonoBehaviour
     {
         spawning = true;
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(4); 
 
-        for (int i = 0; i < waveC; i++)
+        for(int i = 0; i < waveC; i++)
         {
             SpawnEnemy(wave);
             yield return new WaitForSeconds(2);
@@ -56,11 +56,11 @@ public class SpawnManager : MonoBehaviour
     void SpawnEnemy(int wave)
     {
         int spawnPos = Random.Range(0, 4);
-        if (wave == 1)
+        if(wave == 1)
         {
             enemyType = 1;
         }
-        else if (wave < 4)
+        else if(wave < 4)
         {
             enemyType = Random.Range(0, 2);
         }

@@ -14,9 +14,6 @@ public class ZombieController : MonoBehaviour
     float zombieSpeed = 10.0f;
 
     [SerializeField]
-    int coins;
-
-    [SerializeField]
     NavMeshAgent _navAgent;
 
     GameObject player;
@@ -52,8 +49,6 @@ public class ZombieController : MonoBehaviour
 
     void Die()
     {
-        GameManager.Instance.SetDefeatedEnemy();
-        GameManager.Instance.IncrementCoins(coins);
         AudioManager.Instance.PlaySFX("Zombie Dead");
 
         Destroy(transform.parent.gameObject);
