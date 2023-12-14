@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class AimerUIController : MonoBehaviour
 {
-
     public void AimScope()
     {
         gameObject.SetActive(true);
