@@ -62,12 +62,13 @@ public class PlayerMovementController : MonoBehaviour
 
     float _slideTimer;
     float _deaccelerateSlide;
+    Rigidbody _rigidbody; // Reference to the Rigidbody component
 
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
         _gravity = Physics.gravity.y;
-
+        _rigidbody = GetComponent<Rigidbody>(); // Assign the Rigidbody component
         _startHeight = _characterController.height;
         _startYScale = transform.localScale.y;
     }
@@ -235,6 +236,17 @@ public class PlayerMovementController : MonoBehaviour
 
         return deacceleration;
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            // Implement logic for player-enemy collision
+            Debug.Log("Player collided with enemy!");
+            // You can add additional logic here, such as dealing damage to the enemy.
+        }
+    }
+
 
     //// Aplica desaceleración a la velocidad durante el slide
     //float deacceleration = CalcularDesaceleracion(walkingSpeed * slideSpeed, 0f, _slideTimer);
