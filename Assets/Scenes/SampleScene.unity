@@ -3215,9 +3215,8 @@ MonoBehaviour:
   - {fileID: 201162089}
   - {fileID: 288375450}
   enemies:
-  - {fileID: 4013134018909867811, guid: 6d21826383354f047bf9293c3b4060c1, type: 3}
-  - {fileID: 3178343908653718676, guid: 61b822a45987ebd4b91a7fa7867362c6, type: 3}
-  - {fileID: 7123778121706747118, guid: be97282f0e9c37d4fa91038fb0819ad3, type: 3}
+  - {fileID: 5509534171511603776, guid: c7ae486ad004f074480914ecbfa32a8d, type: 3}
+  - {fileID: 4743638856736571881, guid: 010927e632367584dbed283f114b784e, type: 3}
   waveCount: 0
   wave: 0
   enemyType: 0
@@ -4427,7 +4426,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &614965093
 Transform:
   m_ObjectHideFlags: 0
@@ -10639,7 +10638,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2c718eb1e522ba469f9147497fc635f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSounds: []
+  musicSounds:
+  - name: Theme
+    sound: {fileID: 8300000, guid: 2810625e493170a409fd62b4d182d570, type: 3}
   musicSource: {fileID: 640767345}
   sfxSounds:
   - name: GunFire
@@ -12718,6 +12719,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1568146640}
   - component: {fileID: 1568146643}
+  - component: {fileID: 1568146647}
   - component: {fileID: 1568146644}
   - component: {fileID: 1568146645}
   - component: {fileID: 1568146646}
@@ -12797,7 +12799,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingWeapons:
-  - {fileID: 6731985877553370661, guid: e7cb164428a66c1488e940f3ce40dcc9, type: 3}
+  - {fileID: -6999299126623071550, guid: 8752a62f52e95f34d889d0fa99a2ac65, type: 3}
   - {fileID: -3497424073339534113, guid: 4cc8113445802b44f8aaaa667cad8342, type: 3}
   weaponParentSocket: {fileID: 1346670614}
   defaultWeaponPosition: {fileID: 2071018204}
@@ -12816,6 +12818,19 @@ CapsuleCollider:
   m_Height: 2.0145633
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1568146647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1568146639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c99eed25519a7a143b598b46985dc136, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
 --- !u!1 &1573368447
 GameObject:
   m_ObjectHideFlags: 0

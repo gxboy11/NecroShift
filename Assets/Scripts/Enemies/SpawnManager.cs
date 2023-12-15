@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Build.Content;
 using UnityEngine;
 
@@ -55,7 +56,7 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnEnemy(int wave)
     {
-        int spawnPos = Random.Range(0, 4);
+        int spawnPos = Random.Range(0, spawnPoints.Count());
         if (wave == 1)
         {
             enemyType = 1;

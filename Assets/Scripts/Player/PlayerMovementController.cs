@@ -70,6 +70,8 @@ public class PlayerMovementController : MonoBehaviour
 
         _startHeight = _characterController.height;
         _startYScale = transform.localScale.y;
+
+        AudioManager.Instance.PlayMusic("Theme");
     }
 
     private void Update()

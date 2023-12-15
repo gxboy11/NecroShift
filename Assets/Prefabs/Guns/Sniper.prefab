@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hittableLayer:
     serializedVersion: 2
-    m_Bits: 471
+    m_Bits: 321
   bulletHolePrefab: {fileID: 3436891218066723735, guid: 68f355f74c4b19c479bbbbd90155b318,
     type: 3}
   bulletPrefab: {fileID: 7065240663802611530, guid: 90aa220db853e054fa81942e6d8800ce,
